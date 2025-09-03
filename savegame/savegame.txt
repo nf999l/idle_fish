@@ -1,1 +1,10 @@
-name = test,balance = 190,lastSaved = 20259310266
+name = test,
+balance = 882,
+lastSaved = 20259313239,
+fish_blue = 8,
+fish_brown = 5,
+fish_green = 0,
+fish_grey = 0,
+fish_orange = 0,
+fish_pink = 0,
+fish_red = 24

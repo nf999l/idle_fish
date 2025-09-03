@@ -12,9 +12,23 @@ timer = pygame.time.Clock()
 framerate = 60 #60fps
 time = 0 #um sekunden zu erfassen
 
+#create player with playerdata
+playerData = {}
+file = open("savegame/savegame.txt", "r")
+playerData = file.read() #wenn das nicht funktioniert muss ich die daten splitten
+file.close()
+#-----------------------------
+class player:
+    def __init__(self):
+        self.name = playerData["name"]
+        self.balance = playerData["balance"] 
+        
 class generator:
     def __init__(self):
         ...
+        #balance
+        #fish1 anzahl
+        #fish2 anzahl  usw.  
     def update(self):
         ...
 
@@ -39,7 +53,7 @@ while running:
     if time >= 60:
         time = 0
         print("1 Sekunde vergangen")
-        generator.update()
+        generator.update() #ädnern in neuen code
     #-----------------
 
 pygame.quit()
