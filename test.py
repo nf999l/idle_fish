@@ -1,4 +1,7 @@
 import datetime
+from customAssetManager import AssetManager
+
+assets = AssetManager()
 
 price_list = {"fish_blue": 5,
                 "fish_brown": 10,
@@ -71,12 +74,23 @@ def main():
     #----------
     #hier game loop einfügen
     #player1.updateBalance(calcAmounth(player1))
-    player1.buyItem("fish_blue")
+    #player1.buyItem("fish_blue")
+
+    #Bereich Texturen
+    tex_fish_blue = assets.load_image("fish_blue_outline.png")
+    tex_fish_brown = assets.load_image("fish_brown_outline.png")
+    tex_fish_green = assets.load_image("fish_green_outline.png")
+    tex_fish_grey = assets.load_image("fish_grey_outline.png")
+    tex_fish_orange = assets.load_image("fish_orange_outline.png")
+    tex_fish_pink = assets.load_image("fish_pink_outline.png")
+    tex_fish_red = assets.load_image("fish_red_outline.png")
+    #eine funktion könnte die tilemap erstellen (30 breite x 16,875 höhe)
+
     #savegame save
     result = updateSavegame(player1)
     saveSavegame(result)
     #----------
-        
+
 def checkPriceBalance(price, balance):
     if price < balance:
         return True
