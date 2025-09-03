@@ -2,12 +2,12 @@ import pygame
 import os
 
 class AssetManager:
-    def __init__(self, base_path="/workspaces/idle_fish/assets/graphics/"):
+    def __init__(self, base_path="assets/graphics/"):
         self.base_path = base_path
         self.cache = {}
     def load_image(self, filename):
         # Pfad zusammensetzen
-        path = os.path.join(self.base_path, "/graphics/" + filename)
+        path = os.path.join(self.base_path, filename)
 
         # Falls schon geladen: zurückgeben
         if path in self.cache:

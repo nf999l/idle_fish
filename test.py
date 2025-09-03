@@ -1,5 +1,12 @@
 import datetime
+import pygame
 from customAssetManager import AssetManager
+
+pygame.init()
+screen = pygame.display.set_mode(([918, 515]))
+pygame.display.set_caption("Fish Idle")
+timer = pygame.time.Clock()
+framerate = 60 #60fps
 
 assets = AssetManager()
 
@@ -12,7 +19,7 @@ price_list = {"fish_blue": 5,
                 "fish_red": 100000
                 }
 
-class player():
+class Player:
     def __init__(self, name, balance, fish_blue, fish_brown, fish_green, fish_grey, fish_orange, fish_pink, fish_red):
         self.name = name
         self.balance = balance
@@ -58,25 +65,50 @@ class player():
                     self.fish_red += 1
                     self.updateBalance(price_list[item]*-1)
 
-
 def main():
+    #Texturen
+    loadTextures()
+    #----------
     #savegame load
     loadedPlayerData = loadSavegame()
-    player1 = player(loadedPlayerData["name"], 
-                     int(loadedPlayerData["balance"]), 
-                     int(loadedPlayerData["fish_blue"]), 
-                     int(loadedPlayerData["fish_brown"]), 
-                     int(loadedPlayerData["fish_green"]), 
-                     int(loadedPlayerData["fish_grey"]), 
+    player1 = Player(loadedPlayerData["name"],
+                     int(loadedPlayerData["balance"]),
+                     int(loadedPlayerData["fish_blue"]),
+                     int(loadedPlayerData["fish_brown"]),
+                     int(loadedPlayerData["fish_green"]),
+                     int(loadedPlayerData["fish_grey"]),
                      int(loadedPlayerData["fish_orange"]),
-                     int(loadedPlayerData["fish_pink"]), 
+                     int(loadedPlayerData["fish_pink"]),
                      int(loadedPlayerData["fish_red"]))
     #----------
-    #hier game loop einfügen
-    #player1.updateBalance(calcAmounth(player1))
-    #player1.buyItem("fish_blue")
+    #game loop
+    time = 0  # um sekunden zu erfassen
+    running = True
+    while running:
+        timer.tick(framerate)  # kurzversion für pygame.time.Clock.tick()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        # sekunden erfassen
+        time += 1
+        if time >= 60:
+            time = 0
+            player1.updateBalance(calcAmounth(player1))
+            print(player1.balance)
+        # ---------
+        #Texturen
+        updateTextures()
+        #----------
 
-    #Bereich Texturen
+    #savegame save
+    result = updateSavegame(player1)
+    saveSavegame(result)
+    #----------
+    #pygame beenden
+    pygame.quit()
+    #----------
+
+def loadTextures():
     tex_fish_blue = assets.load_image("fish_blue_outline.png")
     tex_fish_brown = assets.load_image("fish_brown_outline.png")
     tex_fish_green = assets.load_image("fish_green_outline.png")
@@ -84,12 +116,10 @@ def main():
     tex_fish_orange = assets.load_image("fish_orange_outline.png")
     tex_fish_pink = assets.load_image("fish_pink_outline.png")
     tex_fish_red = assets.load_image("fish_red_outline.png")
-    #eine funktion könnte die tilemap erstellen (30 breite x 16,875 höhe)
-
-    #savegame save
-    result = updateSavegame(player1)
-    saveSavegame(result)
-    #----------
+    background = assets.load_image("Sample.png")
+    screen.blit(background, (0, 0))
+def updateTextures():
+    pygame.display.update()
 
 def checkPriceBalance(price, balance):
     if price < balance:
@@ -142,8 +172,8 @@ def saveSavegame(d):
         if lastItem < len(d):
             saveString = saveString + f"{key} = {value},\n"
             lastItem += 1
-        elif lastItem == len(d): #beim letzten eintrag sollte das Komma weggelassen werden
-            saveString = saveString + f"{key} = {value}"  
+        elif lastItem == len(d): #beim letzten Eintrag sollte das Komma weggelassen werden
+            saveString = saveString + f"{key} = {value}"
     file = open("savegame/savegame.txt", "w")
     file.write(saveString)
     file.close()
